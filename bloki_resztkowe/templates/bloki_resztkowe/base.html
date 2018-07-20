@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bloki resztkowe{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static '/bloki_resztkowe/assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Archivo+Black">
+    <link rel="stylesheet" href="{% static 'bloki_resztkowe/assets/css/styles.css' %}">
+</head>
+
+<body>
+    
+    {% block header %}
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 col-md-12">
+            <div>
+                <a href="{% url 'bloki_resztkowe:index' %}">
+                <h1 class="text-center" style="font-style:normal;font-family:'Archivo Black', sans-serif;">BLOKI RESZTKOWE</h1>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div>
+                <hr>
+            </div>
+        </div>
+    </div>
+    {% endblock header %}
+        
+    {% block body %}{% endblock body %}
+    <script src="{% static 'bloki_resztkowe/assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'bloki_resztkowe/assets/bootstrap/js/bootstrap.min.js' %}"></script>    
+    {% block jquery %}
+    <script src="{% static 'bloki_resztkowe/assets/bootstrap/js/scripts.js' %}"></script>
+    {% endblock jquery %} 
+</body>
+
+</html>

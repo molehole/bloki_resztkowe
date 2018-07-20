@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% extends 'bloki_resztkowe/base.html' %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12" style="background-color:#70ad47;">
+        <h2 class="text-center">{{ typ_zadania|title }} blok resztkowy</h2>
+    </div>
+</div>
+<div class="row" style="padding:10px;"></div>
+<div class="row">
+    <div class="col-md-12" style="background-color:#{{ wybrany_wymiar.kolor }};">
+        <h3 class="text-center">{{ wybrany_wymiar.typ }}</h3>
+    </div>
+</div>
+<div class="row" style="padding:10px;">
+    {% if pobieranie %}               
+    <div class="col-lg-6">
+        <h2 class="text-center">Zaplanowane</h2>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center">LP.</th>
+                        <th class="text-center">Zaplanowane</th>
+                        {% if wybrany_wymiar == 'Wszystkie' %}
+                            <th >Typ pianki</th>                                
+                        {% endif %}
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wpis in zaplanowane %}                      
+                        <tr class="text-center">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ wpis.x|floatformat }} / {{ wpis.y|floatformat }} / {{ wpis.z|floatformat }}</td>
+                            
+                            {% if wybrany_wymiar == 'Wszystkie' %}
+                                <td style="background-color: #{{ wpis.pianka.kolor }}">{{ wpis.pianka.typ }}</td>                                
+                            {% endif %}
+                            
+                            <td><i class="glyphicon glyphicon-ok ok-sign-done" style="font-size:24px;font-weight:normal;color:#70ad47;" data-id="{{ wpis.id }}"></i></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-6">        
+        <h2 class="text-center">Do zaplanowania</h2>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr class="text-center">
+                        <th class="text-center">LP.</th>
+                        <th class="text-center">Do zaplanowania</th>
+                        <th class="text-center">Typ pianki</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wpis in do_zaplanowania %}                      
+                    <tr class="text-center">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ wpis.x|floatformat }} / {{ wpis.y|floatformat }} / {{ wpis.z|floatformat }}</td>
+                        <td style="background-color: #{{ wpis.pianka.kolor }}">{{ wpis.pianka.typ }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if planowanie %}      
+    <div class="col-lg-12">        
+        <h2 class="text-center">Do zaplanowania</h2>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr class="text-center">
+                        <th class="text-center">LP.</th>
+                        <th class="text-center">Do zaplanowania</th>
+                        <th class="text-center">Typ pianki</th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wpis in do_zaplanowania %}                      
+                    <tr class="text-center">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ wpis.x|floatformat }} / {{ wpis.y|floatformat }} / {{ wpis.z|floatformat }}</td>
+                        <td style="background-color: #{{ wpis.pianka.kolor }}">{{ wpis.pianka.typ }}</td>
+                        <td><i class="glyphicon glyphicon-ok ok-sign-todo" style="font-size:24px;font-weight:normal;color:#70ad47;" data-id="{{ wpis.id }}"></i></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% if not planowanie %}
+<div class="row">
+    <a href="/{{ typ_zadania }}">
+        <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" style="background-color:#ffffff;">
+            <button type="button" class="btn btn-danger btn-block">Cofnij</button>
+        </div>
+    </a>
+</div>
+{% endif %}
+{% endblock body %}
+
+
+{% block jquery %}
+    <script>
+            $(document).ready(function () {
+                $('.ok-sign-todo').click(function (e) { 
+                    e.preventDefault();
+                    var ok = $(this)
+                    $.ajax({
+                        type: "post",
+                        url: "{% url 'bloki_resztkowe:nowy_nesting' %}",
+                        data: {
+                            'nesting_id': ok.attr('data-id'),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        dataType: "html",
+                        success: function (response) {
+                            ok.closest('tr').fadeOut();
+                        }           
+                    });
+                    location.reload();
+                });
+                
+                $('.ok-sign-done').click(function (e) { 
+                    e.preventDefault();
+                    var ok_done = $(this)
+                    $.ajax({
+                        type: "post",
+                        url: "{% url 'bloki_resztkowe:zakonczenie_nestingu' %}",
+                        data: {
+                            'nesting_id': ok_done.attr('data-id'),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        dataType: "html",
+                        success: function (response) {
+                            ok_done.closest('tr').fadeOut();
+                        }           
+                    });
+                    location.reload();
+                });
+            });      
+    </script>
+{% endblock jquery %}
+    

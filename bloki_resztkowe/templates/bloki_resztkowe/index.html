@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% extends 'bloki_resztkowe/base.html' %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row">
+      <div class="col-lg-12 col-lg-offset-0 col-md-12">
+          <div style="height:76px;"></div>
+      </div>
+  </div>
+  <div class="row">
+    <a href="{% url 'bloki_resztkowe:wprowadz_blok'  %}">
+      <div class="col-xs-8 col-xs-offset-2" style="background-color:#70ad47;">
+          <h2 class="text-center" style="font-style:normal;" id="blok-resztkowy">Wprowadź blok resztkowy</h2>
+      </div>
+    </a>
+  </div>
+  <div class="row">
+      <div class="col-lg-12 col-lg-offset-0 col-md-12">
+          <div style="height:76px;"></div>
+      </div>
+  </div>
+  <div class="row">
+    <a href="{% url 'bloki_resztkowe:pobierz_blok'  %}">
+      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-xs-offset-2" style="background-color:#ff3300;">
+          <h2 class="text-center" style="font-style:normal;">Pobierz blok resztkowy</h2>
+      </div>
+    </a>
+  </div>
+</div>
+{% endblock body %}
+
+{% block jquery %}
+
+{% endblock jquery %}

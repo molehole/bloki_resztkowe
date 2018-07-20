@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% extends 'bloki_resztkowe/base.html' %}
+
+{% block body %} 
+<div class="row">
+    <div class="col-md-12" style="background-color:#70ad47;">
+        <h2 class="text-center">{{ typ_zadania|title }} blok resztkowy</h2>
+    </div>
+</div>
+<div class="row" style="padding:10px;"></div>
+<div class="row">
+    <div class="col-md-12" style="background-color:#70ad47;">
+        <h3 class="text-center">Wybierz rodzaj pianki</h3>
+    </div>
+</div>
+<div class="row" style="padding:10px;"></div>
+{% for row in rodzaje_pianki %}
+    <div class="row">
+        <a href="{% url 'bloki_resztkowe:wybor' typ_zadania|lower row.typ %}">
+        <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" style="background-color:#{{row.kolor}};margin-bottom:5px;">
+            <h3 class="text-center">{{ row.typ }}</h3>
+        </div>
+        </a>
+    </div>  
+{% endfor %}
+
+{% if typ_zadania == 'pobierz' %}
+    <div class="row">
+        <a href="{% url 'bloki_resztkowe:wybor' typ_zadania|lower 'wszystkie' %}">
+            <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" style="background: color #5a2311;;margin-bottom:5px;">
+                <h3 class="text-center">Wszystkie</h3>
+            </div>
+        </a>
+    </div> 
+{% endif %}
+<hr>
+<div class="row">
+    <a href="{% url 'bloki_resztkowe:index' %}">
+        <div class="col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" style="background-color:#ffffff;">
+                <button type="button" class="btn btn-danger btn-block">Cofnij</button>
+        </div>
+    </a>
+</div>
+{% endblock body%}
